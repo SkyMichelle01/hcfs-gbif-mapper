@@ -6,8 +6,8 @@ This assignment teaches you to retrieve, analyze, and visualize species occurren
 ## Getting Started
 1. Accept the GitHub Classroom assignment
 2. Clone your repository
-3. Open gbif-species-mapper.qmd in RStudio
-4. Customize the species parameters
+3. Open gbif-species-mapper.qmd in Positron
+4. Customize the taxon parameters
 5. Run the analysis and answer questions
 
 ## Required R Packages
@@ -29,7 +29,7 @@ This repo also includes an automated data-refresh and interactive map for the Hi
 - Map page: `pages/gbif-map.qmd`
 - Data outputs: `data/gbif/`
 
-### Local run
+### Local run in terminal
 
 ```bash
 Rscript scripts/fetch_gbif.R
