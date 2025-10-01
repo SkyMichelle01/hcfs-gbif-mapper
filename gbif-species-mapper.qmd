@@ -1,0 +1,245 @@
+---
+title: "GBIF Species Occurrence Mapper"
+author: "Your Name Here"
+date: today
+format: 
+  html:
+    toc: true
+    code-fold: false
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+```{r setup}
+#| include: false
+# Install required packages if not already installed
+required_packages <- c("rgbif", "leaflet", "dplyr", "DT", "htmlwidgets", "ggplot2")
+
+for (pkg in required_packages) {
+  if (!require(pkg, character.only = TRUE)) {
+    install.packages(pkg)
+    library(pkg, character.only = TRUE)
+  }
+}
+```
+
+## Student Instructions
+
+**Customize these parameters for your species:**
+
+```{r parameters}
+# STUDENT CUSTOMIZATION SECTION
+# =============================
+
+# Your target species (use scientific name)
+species_name <- "Puma concolor"
+
+# Country code (ISO 2-letter: US, CA, MX, etc. Leave as NULL for worldwide)
+country_code <- "US"
+
+# Maximum number of records to retrieve
+max_records <- 500
+
+# Map settings
+map_center_lat <- 39.8283  # Adjust for your study area
+map_center_lon <- -98.5795
+initial_zoom <- 4
+```
+
+## Data Retrieval
+
+```{r data-retrieval}
+cat("Searching for:", species_name, "\n")
+
+# Get species key from GBIF
+species_key <- name_backbone(name = species_name)$usageKey
+
+if (is.null(species_key)) {
+  stop("Species not found in GBIF. Check spelling and try again.")
+}
+
+cat("Species key found:", species_key, "\n")
+
+# Build search parameters
+search_params <- list(
+  taxonKey = species_key,
+  hasCoordinate = TRUE,
+  limit = max_records
+)
+
+# Add country if specified
+if (!is.null(country_code)) {
+  search_params$country <- country_code
+}
+
+# Retrieve occurrence data
+cat("Retrieving occurrence data...\n")
+gbif_data <- do.call(occ_search, search_params)
+
+# Extract data frame
+occurrences <- gbif_data$data
+
+cat("Retrieved", nrow(occurrences), "records\n")
+```
+
+## Data Summary
+
+```{r data-summary}
+# Display basic statistics
+cat("Data Summary for", species_name, "\n")
+cat("Total records:", nrow(occurrences), "\n")
+cat("Date range:", min(occurrences$eventDate, na.rm = TRUE), "to", 
+    max(occurrences$eventDate, na.rm = TRUE), "\n")
+cat("Countries represented:", length(unique(occurrences$countryCode)), "\n")
+```
+
+## Interactive Map
+
+```{r interactive-map}
+#| fig-height: 8
+
+# Create color palette based on year
+occurrences$year <- as.numeric(format(as.Date(occurrences$eventDate), "%Y"))
+year_range <- range(occurrences$year, na.rm = TRUE)
+
+# Create color palette
+pal <- colorNumeric(
+  palette = "viridis",
+  domain = year_range,
+  na.color = "gray"
+)
+
+# Create the map
+map <- leaflet(occurrences) %>%
+  addTiles() %>%
+  setView(lng = map_center_lon, lat = map_center_lat, zoom = initial_zoom) %>%
+  
+  # Add occurrence points
+  addCircleMarkers(
+    lng = ~decimalLongitude,
+    lat = ~decimalLatitude,
+    radius = 5,
+    color = ~pal(year),
+    stroke = TRUE,
+    weight = 1,
+    opacity = 0.8,
+    fillOpacity = 0.6,
+    popup = ~paste(
+      "<strong>", scientificName, "</strong><br>",
+      "Date:", eventDate, "<br>",
+      "Location:", locality, "<br>",
+      "<a href='https://www.gbif.org/occurrence/", key, "' target='_blank'>View on GBIF</a>"
+    )
+  ) %>%
+  
+  # Add legend
+  addLegend(
+    pal = pal,
+    values = ~year,
+    title = "Collection Year",
+    position = "bottomright"
+  )
+
+# Display the map
+map
+```
+
+## Data Table
+
+```{r data-table}
+# Create a clean data table for exploration
+display_data <- occurrences %>%
+  select(
+    scientificName,
+    eventDate,
+    countryCode,
+    stateProvince,
+    locality,
+    decimalLatitude,
+    decimalLongitude,
+    basisOfRecord
+  ) %>%
+  arrange(desc(eventDate))
+
+# Create interactive data table
+DT::datatable(
+  display_data,
+  options = list(
+    pageLength = 10,
+    scrollX = TRUE
+  ),
+  caption = paste("GBIF occurrence records for", species_name)
+)
+```
+
+## Temporal Analysis
+
+```{r temporal-analysis}
+# Plot records over time
+occurrences %>%
+  filter(!is.na(year)) %>%
+  count(year) %>%
+  ggplot(aes(x = year, y = n)) +
+  geom_line(color = "steelblue", size = 1) +
+  geom_point(color = "steelblue", size = 2) +
+  labs(
+    title = paste("GBIF Records Over Time:", species_name),
+    x = "Year",
+    y = "Number of Records"
+  ) +
+  theme_minimal()
+```
+
+## Export Data
+
+```{r export-data}
+# Create outputs directory if it doesn't exist
+if (!dir.exists("outputs")) {
+  dir.create("outputs")
+}
+
+# Save data to CSV
+write.csv(occurrences, 
+          file = file.path("outputs", paste0(gsub(" ", "_", species_name), "_gbif_data.csv")), 
+          row.names = FALSE)
+
+# Save map as HTML widget
+htmlwidgets::saveWidget(
+  map, 
+  file = file.path("outputs", paste0(gsub(" ", "_", species_name), "_map.html")),
+  selfcontained = TRUE
+)
+
+cat("Files saved to outputs/ folder\n")
+```
+
+## Research Questions
+
+**Answer these questions based on your data analysis:**
+
+### 1. Spatial Distribution
+*Describe the geographic distribution of your species. Are there any notable patterns or gaps?*
+
+[Your answer here]
+
+### 2. Temporal Patterns
+*What trends do you observe in the collection dates? Are there periods with more or fewer records?*
+
+[Your answer here]
+
+### 3. Data Quality
+*What is the coordinate uncertainty range for your records? How might this affect your analysis?*
+
+[Your answer here]
+
+### 4. Collection Bias
+*What types of basis of record are most common? What might this tell you about sampling bias?*
+
+[Your answer here]
+
+### 5. Research Applications
+*How could you use this data for conservation or ecological research?*
+
+[Your answer here]

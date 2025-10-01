@@ -1,0 +1,59 @@
+---
+title: "GBIF Map — Hill Country Field Station"
+format: html
+execute:
+  echo: false
+page-layout: article
+---
+
+```{r}
+library(sf)
+library(dplyr)
+library(readr)
+library(crosstalk)
+library(leaflet)
+library(htmltools)
+
+aoi <- tryCatch(sf::st_read("../data/aoi/hcfs.geojson", quiet = TRUE), error = function(e) NULL)
+occ <- tryCatch(readr::read_csv("../data/gbif/occurrences.csv", show_col_types = FALSE), error = function(e) NULL)
+
+if (is.null(occ) || nrow(occ) == 0) {
+  htmltools::div(class = "alert alert-warning",
+                 "No GBIF occurrences found yet. Come back after the nightly update.")
+} else {
+  occ <- occ |>
+    mutate(
+      taxonGroup = dplyr::coalesce(class, phylum, kingdom),
+      popup = paste0(
+        "<b>", dplyr::coalesce(scientificName, "[no name]"), "</b><br/>",
+        ifelse(!is.na(eventDate), paste0("Date: ", eventDate, "<br/>"), ""),
+        ifelse(!is.na(institutionCode), paste0("Institution: ", institutionCode, "<br/>"), ""),
+        ifelse(!is.na(basisOfRecord), paste0("Basis: ", basisOfRecord, "<br/>"), "")
+      )
+    )
+
+  sd <- SharedData$new(occ, key = ~key, group = "occ")
+
+  bscols(
+    widths = c(4, 8),
+    list(
+      filter_select("f_kingdom", "Kingdom", sd, ~kingdom, multiple = TRUE),
+      filter_select("f_phylum", "Phylum", sd, ~phylum, multiple = TRUE),
+      filter_select("f_class", "Class", sd, ~class, multiple = TRUE),
+      filter_select("f_order", "Order", sd, ~order, multiple = TRUE),
+      filter_select("f_family", "Family", sd, ~family, multiple = TRUE)
+    ),
+    leaflet(sd) |>
+      addTiles() |>
+      {
+        m <- .
+        if (!is.null(aoi)) m <- m |> addPolygons(data = aoi, fill = FALSE, weight = 2)
+        m |> addCircleMarkers(
+          lng = ~decimalLongitude, lat = ~decimalLatitude,
+          radius = 4, stroke = FALSE, fillOpacity = 0.7,
+          popup = ~popup, clusterOptions = markerClusterOptions()
+        )
+      }
+  )
+}
+```

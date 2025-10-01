@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Assignment: HCFS GBIF Widget (Auto-Download + Interactive Map)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; line-height: 1.5; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+    .callout { padding: .75rem 1rem; background: #f5faff; border-left: 4px solid #2c7be5; margin: 1rem 0; }
+    .checklist li { margin: .35rem 0; }
+  </style>
+</head>
+<body>
+
+<h1>Assignment: HCFS GBIF Widget (Auto-Download + Interactive Map)</h1>
+
+<div class="callout">
+<strong>Goal.</strong> Build a Quarto page that automatically downloads new GBIF occurrences inside the Hill Country Field Station (HCFS) area of interest (AOI) and renders an interactive Leaflet map with taxon filters. Automate updates with GitHub Actions.
+</div>
+
+<h2>Deliverables</h2>
+<ul>
+  <li>AOI file at <code>data/aoi/hcfs.geojson</code> (already provided and valid WGS84/EPSG:4326)</li>
+  <li>Working interactive map at <code>pages/gbif-map.qmd</code> with functional filters and clustering</li>
+  <li>GitHub Actions workflow passes and commits updated data to <code>data/gbif/</code></li>
+  <li>Pull Request titled “GBIF widget: <em>Your Name</em>” with a screenshot and a short reflection (2–3 sentences)</li>
+</ul>
+
+<h2>Learning Goals</h2>
+<ul>
+  <li>Query GBIF occurrences by geometry (AOI) using R (<code>rgbif</code>)</li>
+  <li>Automate data refresh with GitHub Actions</li>
+  <li>Publish an interactive Leaflet map with Crosstalk filters</li>
+  <li>Practice reproducible, documented workflows in a Quarto site</li>
+</ul>
+
+<h2>Setup (once)</h2>
+<ol class="checklist">
+  <li>Accept the GitHub Classroom assignment invite (link provided in Canvas).</li>
+  <li>Open the repo in Positron or your preferred editor.</li>
+  <li>(Optional, local) Install R ≥ 4.2 and Quarto. From the repo root, run:
+    <pre><code>Rscript scripts/fetch_gbif.R
+quarto render</code></pre>
+  </li>
+</ol>
+
+<h2>What You Need To Do</h2>
+<ol class="checklist">
+  <li>Confirm the HCFS AOI exists at <code>data/aoi/hcfs.geojson</code> (already included).</li>
+  <li>Run the pipeline locally (optional) or just push a test commit to trigger CI.</li>
+  <li>Verify that <code>data/gbif/occurrences.csv</code> and <code>data/gbif/occurrences.geojson</code> are created/updated.</li>
+  <li>Open the rendered page (<code>pages/gbif-map.html</code>) and try the filters (Kingdom &rarr; Family).</li>
+  <li>Open a Pull Request titled “GBIF widget: <em>Your Name</em>” and include:
+    <ul>
+      <li>A screenshot of your map</li>
+      <li>A brief reflection (2–3 sentences) on what you observe after filtering by taxon</li>
+    </ul>
+  </li>
+</ol>
+
+<h2>Tips</h2>
+<ul>
+  <li>The fetcher limits to the last ~5 years. You can adjust this window inside <code>scripts/fetch_gbif.R</code> if needed.</li>
+  <li>If no points appear initially, the nightly job will keep checking; ensure your AOI is valid.</li>
+  <li>If deploying via GitHub Pages, uncomment <code>output-dir: docs</code> in <code>_quarto.yml</code> and enable Pages.</li>
+</ul>
+
+<h2>Submission</h2>
+<p>Submit the URL of your Pull Request in Canvas.</p>
+
+<h2>Academic Integrity & AI Use</h2>
+<p>Document any AI assistance (e.g., prompts, responses) in your PR description. Focus on learning the workflow and verifying results.</p>
+
+</body>
+</html>

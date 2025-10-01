@@ -1,0 +1,140 @@
+---
+title: "GBIF Species Mapper - Assignment Instructions"
+subtitle: "Due Date: [INSERT DATE] | Points: 100"
+format:
+  html:
+    toc: true
+    theme: cosmo
+---
+
+## Assignment Overview
+
+You will use R and Quarto to retrieve, analyze, and visualize species occurrence data from GBIF for a taxonomic group.
+
+## Assigned Species Groups
+
+| Student | Taxonomic Group | Example Species |
+|---------|----------------|-----------------|
+| Student 1 | Large Carnivores | *Puma concolor* |
+| Student 2 | Migratory Birds | *Turdus migratorius* |
+| Student 3 | Marine Mammals | *Balaenoptera musculus* |
+| Student 4 | Pollinators | *Bombus impatiens* |
+| Student 5 | Reptiles | *Crotalus atrox* |
+
+::: {.callout-note}
+## Instructor Note
+Customize the species table above for your specific class assignments.
+:::
+
+## Step-by-Step Instructions
+
+### Step 1: Repository Setup (5 points)
+
+- [ ] Accept GitHub Classroom assignment
+- [ ] Clone repository to your local machine
+- [ ] Open `gbif-species-mapper.qmd` in RStudio
+
+### Step 2: Species Customization (15 points)
+
+- [ ] Modify the `species_name` parameter for your assigned species
+- [ ] Adjust `country_code` if focusing on a specific region
+- [ ] Set appropriate `max_records` (suggest 200-1000)
+- [ ] Update map center coordinates for your study area
+
+### Step 3: Data Analysis (40 points)
+
+- [ ] Run all code chunks successfully
+- [ ] Generate the interactive map with proper styling
+- [ ] Create the temporal analysis plot
+- [ ] Export CSV and HTML files to outputs folder
+
+### Step 4: Research Questions (40 points)
+
+Answer all 5 research questions with thoughtful, detailed responses that demonstrate understanding of the data patterns.
+
+## Grading Rubric
+
+| Component | Points | Excellent (A) | Good (B) | Satisfactory (C) | Needs Improvement (D/F) |
+|-----------|--------|---------------|----------|------------------|-------------------------|
+| **Code Execution** | 25 | All code runs without errors, produces expected outputs | Minor errors that don't affect final results | Some errors but main analysis works | Major errors prevent analysis |
+| **Species Customization** | 20 | Appropriate species choice, well-justified parameters | Good species choice, reasonable parameters | Basic customization completed | Minimal or inappropriate customization |
+| **Map Quality** | 20 | Professional, informative map with all features working | Good map with minor issues | Basic map functionality | Map missing key features or broken |
+| **Analysis & Interpretation** | 20 | Insightful analysis, clear patterns identified | Good analysis with some insights | Basic analysis completed | Superficial or incorrect analysis |
+| **Research Questions** | 15 | Thoughtful, detailed answers demonstrating understanding | Good answers showing comprehension | Basic answers meeting requirements | Incomplete or incorrect answers |
+
+## Tips for Success
+
+::: {.callout-tip}
+## Getting Started
+1. **Start early** - GBIF API calls can be slow
+2. **Test with small datasets first** - Use `max_records = 50` initially
+3. **Check species name spelling** - Verify on GBIF website first
+4. **Document your process** - Add comments explaining your choices
+5. **Ask for help** - Use GitHub issues or office hours
+:::
+
+## Common Issues and Solutions
+
+::: {.callout-warning}
+## Troubleshooting
+
+**Species not found error:**
+- Check scientific name spelling on [GBIF portal](https://www.gbif.org/)
+- Try searching for genus only first
+- Use `name_backbone()` function to test species names
+
+**Too few records:**
+- Expand geographic scope (remove country filter)
+- Try genus-level search instead of species
+- Check if species name has synonyms
+
+**Map not displaying:**
+- Check for missing coordinates
+- Verify latitude/longitude are numeric
+- Ensure leaflet package is loaded
+
+**Large file sizes:**
+- Reduce `max_records` parameter
+- Filter by date range or geographic area
+- Remove unnecessary columns before export
+:::
+
+## Submission Requirements
+
+Your final submission must include:
+
+1. **Completed Quarto notebook** (`gbif-species-mapper.qmd`) with:
+   - Customized parameters for your species
+   - All code chunks executed successfully
+   - Research questions answered in full sentences
+   - Professional formatting and clear explanations
+
+2. **Generated files** in the `outputs/` folder:
+   - HTML report (`gbif-species-mapper.html`)
+   - CSV data file (`[species_name]_gbif_data.csv`)
+   - Interactive map (`[species_name]_map.html`)
+
+3. **Git commits** showing your work progress:
+   - Initial parameter customization
+   - Data retrieval and analysis
+   - Final answers and cleanup
+
+## Academic Integrity
+
+::: {.callout-important}
+## Academic Honesty Policy
+- You may discuss general approaches with classmates
+- All code and analysis must be your own work
+- Properly cite any external resources used
+- Do not share your specific species data or code solutions
+:::
+
+## Late Submission Policy
+
+- 10% deduction per day late
+- No submissions accepted after 1 week past due date
+- Contact instructor immediately if you anticipate problems
+
+---
+
+**Good luck with your analysis!** Remember, the goal is to learn about biodiversity data and spatial analysis, not just complete the assignment.
