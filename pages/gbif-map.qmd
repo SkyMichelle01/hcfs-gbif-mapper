@@ -45,15 +45,14 @@ if (is.null(occ) || nrow(occ) == 0) {
     ),
     leaflet(sd) |>
       addTiles() |>
-      {
         m <- .
-        if (!is.null(aoi)) m <- m |> addPolygons(data = aoi, fill = FALSE, weight = 2)
-        m |> addCircleMarkers(
-          lng = ~decimalLongitude, lat = ~decimalLatitude,
-          radius = 4, stroke = FALSE, fillOpacity = 0.7,
-          popup = ~popup, clusterOptions = markerClusterOptions()
-        )
-      }
+          if (!is.null(aoi)) m <- m |> addPolygons(data = aoi, fill = FALSE, weight = 2)
+          m |> addCircleMarkers(
+            lng = ~decimalLongitude, lat = ~decimalLatitude, 
+              radius = 4, stroke = FALSE, fillOpacity = 0.7, 
+              popup = ~popup, clusterOptions = markerClusterOptions()
+          )
+        }
   )
 }
 ```

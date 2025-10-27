@@ -9,23 +9,6 @@ website:
         text: Analysis
       - href: assignment-instructions.qmd
         text: Instructions
-
-format:
-  html:
-    theme: cosmo
-    toc: true
-    code-fold: false
-    embed-resources: true
-
-
-# --- Added by assignment combiner ---
-
-  navbar:
-    left:
-      - href: gbif-species-mapper.qmd
-        text: Analysis
-      - href: assignment-instructions.qmd
-        text: Instructions
       - href: pages/gbif-map.qmd
         text: HCFS GBIF Map
 

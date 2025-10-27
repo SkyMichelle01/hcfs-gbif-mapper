@@ -34,7 +34,7 @@ for (pkg in required_packages) {
 # =============================
 
 # Your target species (use scientific name)
-species_name <- "Puma concolor"
+species_name <- "Araneae"
 
 # Country code (ISO 2-letter: US, CA, MX, etc. Leave as NULL for worldwide)
 country_code <- "US"
@@ -43,8 +43,8 @@ country_code <- "US"
 max_records <- 500
 
 # Map settings
-map_center_lat <- 39.8283  # Adjust for your study area
-map_center_lon <- -98.5795
+map_center_lat <- 30.332491  # Adjust for your study area
+map_center_lon <- -98.138006
 initial_zoom <- 4
 ```
 
@@ -220,26 +220,31 @@ cat("Files saved to outputs/ folder\n")
 **Answer these questions based on your data analysis:**
 
 ### 1. Spatial Distribution
+
 *Describe the geographic distribution of your species. Are there any notable patterns or gaps?*
 
-[Your answer here]
+\[Your answer here\]
 
 ### 2. Temporal Patterns
+
 *What trends do you observe in the collection dates? Are there periods with more or fewer records?*
 
-[Your answer here]
+\[Your answer here\]
 
 ### 3. Data Quality
+
 *What is the coordinate uncertainty range for your records? How might this affect your analysis?*
 
-[Your answer here]
+\[Your answer here\]
 
 ### 4. Collection Bias
+
 *What types of basis of record are most common? What might this tell you about sampling bias?*
 
-[Your answer here]
+\[Your answer here\]
 
 ### 5. Research Applications
+
 *How could you use this data for conservation or ecological research?*
 
-[Your answer here]
+\[Your answer here\]
